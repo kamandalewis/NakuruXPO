@@ -1158,7 +1158,7 @@ INTRO SEQUENCE
 <div class="intro-content">
 <div class="intro-brand"><span class="dot"></span> Funded Ox · Nakuru</div>
 <h1 class="intro-title">Master the<br><em>Currency Markets</em></h1>
-<div class="intro-sub">Midland Hotel · Nakuru</div>
+<div class="intro-sub">Empolos Hotel · Nakuru</div>
 <div class="intro-powered">Hosted by <strong>Top Trader Lento FX</strong></div>
 <div class="intro-rule"></div>
 </div>
@@ -1215,7 +1215,7 @@ Funded Ox · Nakuru
 
 <p class="hero-sub rv in d2">
 One morning. 100 dedicated seats. Learn foundational forex, live market mechanics,
-and bulletproof risk management at Midland Hotel.
+and bulletproof risk management at Empolos Hotel.
 </p>
 
 <!-- HOST BANNER -->
@@ -1242,7 +1242,7 @@ Verified Host
 </div>
 <div class="pill">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-<div><small>Venue</small>Midland Hotel, Nakuru</div>
+<div><small>Venue</small>Empolos Hotel, Nakuru</div>
 </div>
 </div>
 
@@ -1511,13 +1511,13 @@ VENUE
 <div class="wrap">
 <div class="sec-head center rv">
 <div class="kicker">Venue & Details</div>
-<h2>One morning at <em>Midland Hotel</em></h2>
+<h2>One morning at <em>Empolos Hotel</em></h2>
 <p>Centrally located in Nakuru with ample parking, reliable power, and a professional conference setup for 100 attendees.</p>
 </div>
 
 <div class="venue-grid">
 <div class="venue-card rv">
-<h3>Midland Hotel, Nakuru</h3>
+<h3>Empolos Hotel, Nakuru</h3>
 <p>Doors open at 8:00 AM. Please arrive early to collect your badge, merchandise, and settle in before the first session begins at 8:30 AM sharp.</p>
 
 <div class="v-list">
@@ -1527,7 +1527,7 @@ VENUE
 </div>
 <div>
 <div class="k">Location</div>
-<div class="val">Midland Hotel, Kenyatta Avenue, Nakuru</div>
+<div class="val">Empolos Hotel, Kenyatta Avenue, Nakuru</div>
 </div>
 </div>
 
@@ -1557,17 +1557,17 @@ VENUE
 Reserve Your Seat
 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
 </a>
-<a href="https://maps.google.com/?q=Midland+Hotel+Nakuru" target="_blank" rel="noopener" class="btn btn-outline">
+<a href="https://maps.google.com/?q=Empolos+Hotel+Nakuru" target="_blank" rel="noopener" class="btn btn-outline">
 View on Map
 </a>
 </div>
 </div>
 
 <div class="venue-visual rv d1">
-<img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1400&q=80" alt="Midland Hotel conference venue">
+<img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1400&q=80" alt="Empolos Hotel conference venue">
 <div class="venue-caption">
 <div class="lbl">Conference Hall</div>
-<strong>Midland Hotel · Nakuru</strong>
+<strong>Empolos Hotel · Nakuru</strong>
 </div>
 </div>
 </div>
@@ -1596,7 +1596,7 @@ FOOTER
 </div>
 <div class="foot-bot">
 <p>© 2026 Funded Ox. All rights reserved.</p>
-<p>Master the Currency Markets · Midland Hotel, Nakuru</p>
+<p>Master the Currency Markets · Empolos Hotel, Nakuru</p>
 </div>
 </div>
 </footer>
@@ -1696,7 +1696,7 @@ Back to event
 </div>
 <div class="tc-cell">
 <div class="k">Venue</div>
-<div class="v">Midland Hotel</div>
+<div class="v">Empolos Hotel</div>
 </div>
 </div>
 
@@ -2029,7 +2029,7 @@ form.addEventListener('submit', e => {
             const supabaseUrl = 'https://haquskayvxrfijznrcuv.supabase.co';
             const anonKey = 'sb_publishable_nTc49xyV_MRqgT379g54jQ_Iu2cC1eV';
             let attempts = 0;
-            const maxAttempts = 20; // 60 seconds total (3 seconds * 20 attempts)
+            const maxAttempts = 40; 
 
             // Start polling the database for payment status
             const pollInterval = setInterval(() => {
@@ -2039,7 +2039,7 @@ form.addEventListener('submit', e => {
                 if (attempts > maxAttempts) {
                     clearInterval(pollInterval);
                     bookBtn.disabled = false;
-                    bookBtn.querySelector('.lbl').textContent = 'Pay &#36;2.99 · Secure Seat';
+                    bookBtn.querySelector('.lbl').textContent = 'Pay USD 2.99 · Secure Seat';
                     alert("Payment confirmation timed out. If money was deducted, please contact support with code: " + ticketCode);
                     return;
                 }
@@ -2074,7 +2074,7 @@ form.addEventListener('submit', e => {
                             
                             // Reset button state
                             bookBtn.disabled = false;
-                            bookBtn.querySelector('.lbl').textContent = 'Pay &#36;2.99 · Secure Seat';
+                            bookBtn.querySelector('.lbl').textContent = 'Pay USD 2.99 · Secure Seat';
                             
                         } else if (status === 'failed') {
                             clearInterval(pollInterval); // Stop polling
@@ -2090,7 +2090,7 @@ form.addEventListener('submit', e => {
             // MegaPay failed to send STK push
             bookBtn.disabled = false;
             bookBtn.classList.remove('loading');
-            bookBtn.querySelector('.lbl').textContent = 'Pay &#36;2.99 · Secure Seat';
+            bookBtn.querySelector('.lbl').textContent = 'Pay KES 395 · Secure Seat';
             alert(resData.error || "Failed to initiate M-PESA payment. Please try again.");
         }
     })
