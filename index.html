@@ -2000,56 +2000,104 @@ return ok ? {name, email, phone} : null;
 
 form.addEventListener('submit', e => {
     e.preventDefault();
-    const data = validate();
-    if(!data) return;
+    const formData = validate();
+    if(!formData) return;
 
     // Disable button and show loading spinner
     bookBtn.disabled = true;
     bookBtn.classList.add('loading');
+    bookBtn.querySelector('.lbl').textContent = 'Processing...';
 
     // Call the Supabase Edge Function
     fetch('https://haquskayvxrfijznrcuv.supabase.co/functions/v1/OXmega-payment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            full_name: data.name,
-            email: data.email,
-            phone: data.phone
+            full_name: formData.name,
+            email: formData.email,
+            phone: formData.phone
         })
     })
     .then(res => res.json())
-    .then(data => {
-        bookBtn.disabled = false;
-        bookBtn.classList.remove('loading');
-
-        if (data.success) {
-            // MegaPay successfully sent the STK push
+    .then(resData => {
+        if (resData.success) {
             form.reset();
+            bookBtn.classList.remove('loading');
+            bookBtn.querySelector('.lbl').textContent = 'Waiting for M-PESA...';
+
+            const ticketCode = resData.ticket_code;
+            const supabaseUrl = 'https://haquskayvxrfijznrcuv.supabase.co';
+            const anonKey = 'sb_publishable_nTc49xyV_MRqgT379g54jQ_Iu2cC1eV';
+            let attempts = 0;
+            const maxAttempts = 20; // 60 seconds total (3 seconds * 20 attempts)
+
+            // Start polling the database for payment status
+            const pollInterval = setInterval(() => {
+                attempts++;
+                
+                // If user takes too long, stop polling
+                if (attempts > maxAttempts) {
+                    clearInterval(pollInterval);
+                    bookBtn.disabled = false;
+                    bookBtn.querySelector('.lbl').textContent = 'Pay &#36;2.99 · Secure Seat';
+                    alert("Payment confirmation timed out. If money was deducted, please contact support with code: " + ticketCode);
+                    return;
+                }
+
+                // Query Supabase directly via REST API for the payment status
+                fetch(`${supabaseUrl}/rest/v1/bookings?select=payment_status,seat_number&ticket_code=eq.${ticketCode}`, {
+                    headers: {
+                        'apikey': anonKey,
+                        'Authorization': `Bearer ${anonKey}`
+                    }
+                })
+                .then(r => r.json())
+                .then(dbData => {
+                    if (dbData && dbData.length > 0) {
+                        const status = dbData[0].payment_status;
+                        const seatNo = dbData[0].seat_number;
+
+                        if (status === 'completed') {
+                            clearInterval(pollInterval); // Stop polling
+                            
+                            const ticket = {
+                                name: formData.name,
+                                email: formData.email,
+                                phone: formData.phone,
+                                seat: seatNo,
+                                code: ticketCode,
+                                ts: Date.now()
+                            };
+                            
+                            confetti(90);
+                            showTicket(ticket);
+                            
+                            // Reset button state
+                            bookBtn.disabled = false;
+                            bookBtn.querySelector('.lbl').textContent = 'Pay &#36;2.99 · Secure Seat';
+                            
+                        } else if (status === 'failed') {
+                            clearInterval(pollInterval); // Stop polling
+                            bookBtn.disabled = false;
+                            bookBtn.querySelector('.lbl').textContent = 'Pay KES 395 · Secure Seat';
+                            alert("Payment failed or cancelled. Please try again.");
+                        }
+                    }
+                });
+            }, 3000); // Check every 3 seconds
             
-            // Show the digital ticket (Seat number is handled by DB, 
-            // but we can show a waiting message or use the returned ticket_code)
-            // For now, let's just trigger confetti and the ticket view using the returned code.
-            
-            const seatNo = Math.floor(Math.random() * 100) + 1; // Temporary visual seat number
-            const ticket = {
-                name: data.name || 'Attendee',
-                email: data.email,
-                phone: data.phone,
-                seat: seatNo,
-                code: data.ticket_code,
-                ts: Date.now()
-            };
-            
-            confetti(90);
-            showTicket(ticket);
         } else {
             // MegaPay failed to send STK push
-            alert(data.error || "Failed to initiate M-PESA payment. Please try again.");
+            bookBtn.disabled = false;
+            bookBtn.classList.remove('loading');
+            bookBtn.querySelector('.lbl').textContent = 'Pay &#36;2.99 · Secure Seat';
+            alert(resData.error || "Failed to initiate M-PESA payment. Please try again.");
         }
     })
     .catch(error => {
         bookBtn.disabled = false;
         bookBtn.classList.remove('loading');
+        bookBtn.querySelector('.lbl').textContent = 'Pay KES 395 · Secure Seat';
         alert("Network error. Please check your connection and try again.");
         console.error('Error:', error);
     });
