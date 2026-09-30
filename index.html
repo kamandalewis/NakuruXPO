@@ -2074,7 +2074,7 @@ form.addEventListener('submit', e => {
                             
                             // Reset button state
                             bookBtn.disabled = false;
-                            bookBtn.querySelector('.lbl').textContent = 'Pay &#36;2.00 · Secure Seat';
+                            bookBtn.querySelector('.lbl').textContent = 'Pay $2.00 · Secure Seat';
                             
                         } else if (status === 'failed') {
                             clearInterval(pollInterval); // Stop polling
@@ -2090,7 +2090,7 @@ form.addEventListener('submit', e => {
             // MegaPay failed to send STK push
             bookBtn.disabled = false;
             bookBtn.classList.remove('loading');
-            bookBtn.querySelector('.lbl').textContent = 'Pay &#36;2.00 · Secure Seat';
+            bookBtn.querySelector('.lbl').textContent = 'Pay $2.00 · Secure Seat';
             alert(resData.error || "Failed to initiate M-PESA payment. Please try again.");
         }
     })
